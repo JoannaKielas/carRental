@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <title>Information about car</title>
+</head>
+
+<body>
+{% load bootstrap5 %}
+{% include 'header.html' %}
+
+<h1> INFORMATION ABOUT CAR </h1>
+
+<ul>
+    <li>ID: {{ object.id }}</li>
+    <li>BRAND: {{ object.brand }}</li>
+    <li>SEATS: {{ object.seats}}</li>
+    <li>PRICE: {{ object.price}}</li>
+    <li>TRANSMISSION: {{ object.transmission}}</li>
+    <li>TYPE: {{ object.type}}</li>
+
+</ul>
+
+{% if not object.is_reserved %}
+<form action="{% url 'reserve' auto.id %}">
+     {% csrf_token %}
+    <input type="submit" value="reserve">
+</form>
+{% else %}
+<h3 style="color:red">Car has been already reserved</h3>
+</body>
+{% endif %}
+</html>

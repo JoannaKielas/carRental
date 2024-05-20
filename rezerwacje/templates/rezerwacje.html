@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <title>Rezerwacja Samochodow</title>
+</head>
+
+<body>
+{% load bootstrap5 %}
+{% include 'header.html' %}
+<table>
+    <tr>
+        <th>ID</th>
+        <th></th>
+    </tr>
+{% for rezerwacja in object_list %}
+    <!-- Display Objects -->
+
+    <tr>
+        <td>{{ rezerwacja.id }}</td>
+        <td>
+            <form action="{% url 'unreserve' rezerwacja.id %}">
+                 {% csrf_token %}
+                <input type="submit" value="unreserve">
+            </form>
+        </td>
+    </tr>
+
+{% endfor %}
+</table>
+</body>
+</html>

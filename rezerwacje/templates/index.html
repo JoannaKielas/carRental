@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <title>Rezerwacja Samochodow</title>
+</head>
+
+<body>
+{% load bootstrap5 %}
+{% include 'header.html' %}
+
+<h1>Select car options</h1>
+<form action="{% url 'index' %}" method="POST">
+    {% csrf_token %}
+    {% for field in form %}
+        <div class="fieldWrapper">
+            {{ field.errors }}
+            {{ field.label_tag }} {{ field }}
+        </div>
+    {% endfor %}
+    <input type="submit" value="SEARCH">
+</form>
+
+<h1>List of available cars</h1>
+<table>
+    <tr>
+        <th>TYPE</th>
+        <th>PRICE</th>
+        <th>SEATS</th>
+        <th>TRANSMISSION</th>
+        <th></th>
+    </tr>
+{% for auto in object_list %}
+    <!-- Display Objects -->
+    <tr>
+        <td>{{ auto.type }}</td>
+        <td>{{ auto.price }}</td>
+        <td>{{ auto.seats }}</td>
+        <td>{{ auto.transmission }}</td>
+        <td>
+            <form action="{% url 'details' auto.id %}">
+                 {% csrf_token %}
+                <input type="submit" value="details">
+            </form>
+        </td>
+    </tr>
+{% endfor %}
+
+</table>
+<script src="{% static 'bootstrap/js/jquery.min.js' %}"></script>
+<script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>
