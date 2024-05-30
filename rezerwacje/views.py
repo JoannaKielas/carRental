@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
+from django.db.models import Q
 from rezerwacje.models import Auto, Rezerwacja, Account
 from django.db import transaction
 from django.http import HttpResponse
@@ -18,6 +19,7 @@ class AutoListView(ListView):
     def get_queryset(self):
         return self.queryset.filter(rezerwacja=None)
 
+
     def get_context_data(self, **kwargs):
         context = super(AutoListView, self).get_context_data(**kwargs)
         context["form"] = AutoForm(self.request.POST or None)
@@ -33,8 +35,10 @@ class AutoListView(ListView):
             price = self.request.POST["price"]
             type = self.request.POST["type"]
 
-            if transmission != "":
+            if transmission != "" and transmission != "BOTH":
                 self.object_list = self.object_list.filter(transmission=transmission)
+            if transmission == 'BOTH':
+                self.object_list = self.object_list.filter(Q(transmission='AUTOMATIC') | Q(transmission='MANUAL'))
             if seats != "":
                 self.object_list = self.object_list.filter(seats=seats)
             if price != "":
